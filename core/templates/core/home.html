@@ -1,0 +1,111 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Axel | Analista Programador</title>
+    <link rel="stylesheet" href="{% static 'core/style.css' %}">
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo">Axel.Dev</a>
+            <nav>
+                <a href="#contacto" style="text-decoration:none; color:var(--accent-color); font-weight:500;">Contáctame</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero reveal">
+        <h1>Analista Programador.</h1>
+        <p>Desarrollando soluciones web robustas y escalables con la potencia de Django.</p>
+        <br>
+        <a href="#proyectos" class="btn" style="background: #1d1d1f; color: white;">Ver mis trabajos</a>
+    </section>
+
+    <div class="container">
+        
+        <h2 class="section-title reveal">Habilidades Técnicas</h2>
+        <div class="skills-list reveal">
+            {% for hab in habilidades %}
+            <div class="skill-item">
+                <div class="skill-info">
+                    <span>{{ hab.nombre }}</span>
+                    <span>{{ hab.nivel }}%</span>
+                </div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" style="width: {{ hab.nivel }}%;"></div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <h2 class="section-title reveal" id="proyectos">Proyectos Destacados</h2>
+        
+        <div class="projects-grid">
+            {% for pro in proyectos %}
+            <div class="card reveal">
+                <div class="card-content">
+                    <h3>{{ pro.titulo }}</h3>
+                    <p>{{ pro.descripcion }}</p>
+                    
+                    {% if pro.link_github %}
+                        <a href="{{ pro.link_github }}" target="_blank" class="btn">Ver en GitHub</a>
+                    {% endif %}
+                    
+                    <small style="display:block; margin-top:15px; color:#ccc; font-size:0.8rem;">
+                        Publicado: {{ pro.fecha|date:"d M Y" }}
+                    </small>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <h2 class="section-title reveal" id="contacto">Contacto</h2>
+        
+        <div class="contact-list reveal">
+            {% for contacto in contactos %}
+                <li>
+                    <a href="{{ contacto.url }}" target="_blank">
+                        {{ contacto.red }} ↗
+                    </a>
+                </li>
+            {% endfor %}
+        </div>
+
+    </div>
+
+    <footer style="text-align:center; padding: 40px; color: #86868b; font-size: 0.9rem; border-top: 1px solid #e5e5e5;">
+        <p>&copy; 2025 Axel Vilela. Creado con Django & Love.</p>
+    </footer>
+
+    <script>
+        window.addEventListener('scroll', reveal);
+
+        function reveal(){
+            var reveals = document.querySelectorAll('.reveal');
+
+            for(var i = 0; i < reveals.length; i++){
+                
+                var windowheight = window.innerHeight;
+                var revealtop = reveals[i].getBoundingClientRect().top;
+                var revealpoint = 100;
+
+                // Si el elemento entra en pantalla...
+                if(revealtop < windowheight - revealpoint){
+                    reveals[i].classList.add('active');
+                } 
+                // Si el elemento sale por abajo (opcional, para repetir al subir)
+                else {
+                    reveals[i].classList.remove('active');
+                }
+            }
+        }
+        
+        reveal();
+    </script>
+
+</body>
+</html>
