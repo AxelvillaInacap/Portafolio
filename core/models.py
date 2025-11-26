@@ -16,8 +16,6 @@ class Habilidad(models.Model):
 class Proyecto(models.Model):
     titulo = models.CharField(max_length=200, verbose_name="Título")
     descripcion = models.TextField(verbose_name="Descripción")
-    # Aquí se guardarán las fotos de tus proyectos
-    imagen = models.ImageField(upload_to='proyectos/', verbose_name="Imagen")
     link_github = models.URLField(blank=True, null=True, verbose_name="Link GitHub")
     fecha = models.DateTimeField(auto_now_add=True)
 
