@@ -1,18 +1,36 @@
-from django.shortcuts import render
-from .models import Habilidad, Proyecto, Contacto
+from django.shortcuts import render, redirect
+from .models import Habilidad, Proyecto, Contacto, Trayectoria, Certificado
+from .forms import MensajeForm
 
 def home(request):
-    # 1. Traemos todos los datos de la base de datos
+    # Lógica del Formulario
+    if request.method == 'POST':
+        form = MensajeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            # Redirigimos a la misma página con un parámetro de éxito
+            return redirect('/?enviado=true#contacto')
+    else:
+        form = MensajeForm()
+
+    # Datos para mostrar
     habilidades = Habilidad.objects.all()
     proyectos = Proyecto.objects.all()
     contactos = Contacto.objects.all()
+    trayectoria = Trayectoria.objects.all()
+    certificados = Certificado.objects.all()
+    
+    # Verificamos si el mensaje se envió con éxito (para mostrar alerta)
+    mensaje_exito = request.GET.get('enviado') == 'true'
 
-    # 2. Los empaquetamos en un diccionario "contexto"
     context = {
         'habilidades': habilidades,
         'proyectos': proyectos,
         'contactos': contactos,
+        'trayectoria': trayectoria,
+        'certificados': certificados,
+        'form': form,
+        'mensaje_exito': mensaje_exito
     }
 
-    # 3. Enviamos ese paquete al archivo HTML (que crearemos pronto)
     return render(request, 'core/home.html', context)

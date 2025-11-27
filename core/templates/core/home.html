@@ -6,14 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Axel | Analista Programador</title>
     <link rel="stylesheet" href="{% static 'core/style.css' %}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
 
     <header>
         <div class="nav-container">
             <a href="#" class="logo">Axel.Dev</a>
-            <nav>
+            <nav style="display: flex; align-items: center; gap: 20px;">
                 <a href="#contacto" style="text-decoration:none; color:var(--accent-color); font-weight:500;">Contáctame</a>
+                <button id="theme-toggle" class="theme-toggle">
+                    <i class='bx bx-moon'></i>
+                </button>
             </nav>
         </div>
     </header>
@@ -22,8 +26,30 @@
         <h1>Analista Programador.</h1>
         <p>Desarrollando soluciones web robustas y escalables con la potencia de Django.</p>
         <br>
-        <a href="#proyectos" class="btn" style="background: #1d1d1f; color: white;">Ver mis trabajos</a>
+        <a href="#proyectos" class="btn" style="background: var(--text-primary); color: var(--bg-color);">Ver mis trabajos</a>
     </section>
+    <div class="container">
+        
+        <h2 class="section-title reveal">Mi Trayectoria</h2>
+        <div class="timeline reveal">
+            {% for hito in trayectoria %}
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <span class="timeline-date">{{ hito.fecha }}</span>
+                <div class="timeline-content">
+                    <h3>{{ hito.titulo }}</h3>
+                    <h4>{{ hito.lugar }}</h4>
+                    {% if hito.descripcion %}
+                        <p>{{ hito.descripcion }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% empty %}
+                <p style="color:var(--text-secondary)">Aún no hay hitos registrados.</p>
+            {% endfor %}
+        </div>
+
+        <br><br>
 
     <div class="container">
         
@@ -41,6 +67,35 @@
             </div>
             {% endfor %}
         </div>
+        <h2 class="section-title reveal">Certificaciones</h2>
+        
+        <div class="projects-grid">
+            {% for cert in certificados %}
+            <div class="card reveal" style="text-align: center; align-items: center;">
+                
+                {% if cert.imagen %}
+                    <img src="{{ cert.imagen.url }}" alt="{{ cert.titulo }}" class="cert-img">
+                {% else %}
+                    <div style="height:140px; width:100%; display:flex; align-items:center; justify-content:center; background:var(--bg-color); border-bottom:1px solid var(--border-color);">
+                        <i class='bx bxs-certification' style="font-size: 4rem; color: var(--accent-color);"></i>
+                    </div>
+                {% endif %}
+                
+                <div class="card-content" style="width: 100%;">
+                    <h3 style="font-size: 1.2rem;">{{ cert.titulo }}</h3>
+                    <p style="margin-bottom: 5px; color: var(--text-primary); font-weight: 500;">{{ cert.entidad }}</p>
+                    <small style="color: var(--text-secondary);">{{ cert.fecha }}</small>
+                    
+                    {% if cert.link_credencial %}
+                        <br><br>
+                        <a href="{{ cert.link_credencial }}" target="_blank" class="btn" style="font-size: 0.8rem; padding: 5px 15px;">Ver Credencial</a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <br><br>
 
         <h2 class="section-title reveal" id="proyectos">Proyectos Destacados</h2>
         
@@ -55,7 +110,7 @@
                         <a href="{{ pro.link_github }}" target="_blank" class="btn">Ver en GitHub</a>
                     {% endif %}
                     
-                    <small style="display:block; margin-top:15px; color:#ccc; font-size:0.8rem;">
+                    <small style="display:block; margin-top:15px; color:var(--text-secondary); font-size:0.8rem;">
                         Publicado: {{ pro.fecha|date:"d M Y" }}
                     </small>
                 </div>
@@ -65,46 +120,86 @@
 
         <h2 class="section-title reveal" id="contacto">Contacto</h2>
         
-        <div class="contact-list reveal">
-            {% for contacto in contactos %}
-                <li>
-                    <a href="{{ contacto.url }}" target="_blank">
-                        {{ contacto.red }} ↗
-                    </a>
-                </li>
-            {% endfor %}
+        <div class="contact-section reveal">
+            {% if mensaje_exito %}
+                <div class="success-message">
+                    ¡Gracias! Tu mensaje ha sido enviado correctamente.
+                </div>
+            {% endif %}
+
+            <div class="contact-container">
+                <div class="contact-links">
+                    <h3>Mis Redes</h3>
+                    <p style="color:var(--text-secondary); margin-bottom:20px;">Encuéntrame en estas plataformas:</p>
+                    <ul>
+                        {% for contacto in contactos %}
+                            <li>
+                                <a href="{{ contacto.url }}" target="_blank">
+                                    {{ contacto.red }} <i class='bx bx-link-external'></i>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="contact-form-wrapper">
+                    <h3>Envíame un mensaje</h3>
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ form.nombre }}
+                        {{ form.email }}
+                        {{ form.asunto }}
+                        {{ form.mensaje }}
+                        <button type="submit" class="btn" style="width:100%">Enviar Mensaje</button>
+                    </form>
+                </div>
+            </div>
         </div>
 
     </div>
 
-    <footer style="text-align:center; padding: 40px; color: #86868b; font-size: 0.9rem; border-top: 1px solid #e5e5e5;">
+    <footer style="text-align:center; padding: 40px; color: var(--text-secondary); font-size: 0.9rem; border-top: 1px solid var(--border-color);">
         <p>&copy; 2025 Axel Vilela. Creado con Django & Love.</p>
     </footer>
 
     <script>
+        // 1. Scroll Reveal
         window.addEventListener('scroll', reveal);
-
         function reveal(){
             var reveals = document.querySelectorAll('.reveal');
-
             for(var i = 0; i < reveals.length; i++){
-                
                 var windowheight = window.innerHeight;
                 var revealtop = reveals[i].getBoundingClientRect().top;
                 var revealpoint = 100;
-
-                // Si el elemento entra en pantalla...
                 if(revealtop < windowheight - revealpoint){
                     reveals[i].classList.add('active');
-                } 
-                // Si el elemento sale por abajo (opcional, para repetir al subir)
-                else {
-                    reveals[i].classList.remove('active');
                 }
             }
         }
-        
         reveal();
+
+        // 2. Dark Mode Logic
+        const toggleBtn = document.getElementById('theme-toggle');
+        const body = document.body;
+        const icon = toggleBtn.querySelector('i');
+
+        // Revisar preferencia guardada
+        if (localStorage.getItem('theme') === 'dark') {
+            body.classList.add('dark-mode');
+            icon.classList.replace('bx-moon', 'bx-sun');
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+                icon.classList.replace('bx-moon', 'bx-sun');
+            } else {
+                localStorage.setItem('theme', 'light');
+                icon.classList.replace('bx-sun', 'bx-moon');
+            }
+        });
     </script>
 
 </body>
