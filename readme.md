@@ -1,40 +1,45 @@
 # Portafolio Profesional Dinámico (Django)
 
-Este repositorio contiene el código fuente de mi portafolio web personal. Es una aplicación web desarrollada con **Django** que actúa como un CMS (Sistema de Gestión de Contenidos), permitiendo administrar toda la información (proyectos, habilidades, trayectoria, certificados) directamente desde un panel de administración, sin necesidad de modificar el código HTML.
+Este repositorio contiene el código fuente de mi portafolio web personal. Es una aplicación web desarrollada con **Django** que actúa como un CMS (Sistema de Gestión de Contenidos), permitiendo administrar toda la información (proyectos, habilidades, trayectoria, certificados) directamente desde un panel de administración, sin necesidad de tocar el código.
 
 ## ✨ Características Principales
 
-* **Diseño UI/UX Premium:** Estilo minimalista inspirado en la estética de Apple, con tipografía limpia, espaciado amplio y tarjetas con efectos de elevación.
-* **Administración Total:** Todo el contenido es dinámico. Desde el panel `/admin` se pueden agregar, editar o eliminar:
-    * Hitos de Trayectoria (Línea de tiempo).
-    * Habilidades Técnicas (Barras de progreso).
-    * Proyectos Destacados.
-    * Certificaciones Académicas.
-    * Redes de Contacto.
-* **Formulario de Contacto Funcional:** Los mensajes enviados desde la web se guardan automáticamente en la base de datos para su gestión posterior.
-* **Modo Oscuro (Dark Mode):** Detección automática de la preferencia del sistema y botón manual para alternar entre temas claro y oscuro, manteniendo la integridad del diseño.
-* **Animaciones "Scroll Reveal":** Los elementos aparecen suavemente a medida que el usuario navega hacia abajo.
+* **Diseño UI/UX Premium:** Estilo minimalista inspirado en la estética de Apple, con tipografía limpia, espaciado amplio y tarjetas con efectos de elevación ("Glassmorphism").
+* **Administración Total:** Todo el contenido es dinámico. Desde el panel `/admin` se pueden gestionar:
+    * **Trayectoria:** Línea de tiempo cronológica (Educación y Experiencia).
+    * **Habilidades:** Barras de progreso divididas en Backend y Frontend.
+    * **Proyectos:** Tarjetas con descripciones y enlaces a repositorios.
+    * **Certificaciones:** Sección dedicada para diplomas y credenciales.
+    * **Redes de Contacto:** Enlaces a plataformas sociales.
+* **Formulario de Contacto Funcional:** Los mensajes enviados desde la web se guardan en la base de datos y **envían una notificación automática por correo electrónico** (SMTP) al administrador.
+* **Modo Oscuro (Dark Mode):** Detección automática de la preferencia del sistema y botón manual para alternar entre temas claro y oscuro.
+* **Animaciones:** Efecto "Scroll Reveal" para una experiencia de navegación fluida.
+* **Seguridad:** Uso de variables de entorno para proteger credenciales sensibles.
 
 ## 🛠️ Tecnologías Utilizadas
 
-* **Backend:** Python, Django 5.x
+* **Backend:** Python 3.x, Django 5.x
 * **Base de Datos:** SQLite 3 (Por defecto)
 * **Frontend:** HTML5, CSS3 (Variables CSS, Flexbox, Grid), JavaScript Vanilla.
-* **Librerías Adicionales:** `Pillow` (Manejo de imágenes).
+* **Librerías Clave:**
+    * `Pillow` (Manejo de imágenes).
+    * `python-dotenv` (Seguridad y Variables de Entorno).
+
+---
 
 ## 🚀 Instalación y Ejecución Local
 
-Si quieres probar este proyecto en tu máquina local, sigue estos pasos:
+Sigue estos pasos exactos para levantar el proyecto en tu máquina:
 
-### 1. Clonar el repositorio
+### 1. Clonar el Repositorio
 ```bash
 git clone [https://github.com/AxelvillaInacap/Portafolio.git](https://github.com/AxelvillaInacap/Portafolio.git)
 cd Portafolio
 ```
 
-### 2. Configurar el Entorno Virtual
+### 2. Configurar entorno virtual
 ```bash
-# Crear el entorno virtual
+# Crear el venv
 python -m venv venv
 
 # Activar en Windows
@@ -44,21 +49,43 @@ python -m venv venv
 source venv/bin/activate
 ```
 
-### 3. Instalar dependencias y Preparar la Base de datos
+### 3. Instalar dependencias
 ```bash
-pip install django Pillow
+pip install django Pillow python-dotenv
+```
+
+### 4. Configurar Variables de entorno (IMPORTANTE)
+```bash
+EMAIL_HOST_USER=tu_correo@gmail.com
+EMAIL_HOST_PASSWORD=tu_contraseña_de_aplicacion
+
+# nota: La contraseña debe ser una "Contraseña de Aplicación" de Google de 16 caracteres, no tu clave habitual
+```
+
+### 5. Preparar la base de datos
+
+```bash
 python manage.py migrate
 ```
 
-### 4. Crear un superusuario
+### 6. Crear un SuperUsuario
 ```bash
 python manage.py createsuperuser
-(Importante seguir las instrucciones del teminal)
 ```
-### 5. Ejecutar el Servidor
+
+### 7. Ejecutar el Servidor
 ```bash
 python manage.py runserver
 ```
+---------------------------------------------
 
+## Como Probar la aplicacion
+Ver el Portafolio: Abre http://127.0.0.1:8000/.
 
-## ✨ Desarrollado por Axel Villa - Analista Programador
+Panel de Administración: Ve a http://127.0.0.1:8000/admin/ e inicia sesión.
+
+Aquí podrás crear, editar y eliminar tus Proyectos, Habilidades, Certificados y Trayectoria.
+
+Probar Contacto: Llena el formulario al final de la página principal. Si el archivo .env está correcto, recibirás un correo electrónico real.
+
+# Desarrollado Por Axel Villa

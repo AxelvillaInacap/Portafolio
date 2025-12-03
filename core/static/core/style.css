@@ -1,3 +1,11 @@
+html {
+    scroll-behavior: smooth; /* <--- ESTO ES MAGIA */
+}
+
+/* Ajuste para que el menú fijo no tape los títulos al bajar */
+section, h2.section-title {
+    scroll-margin-top: 80px; 
+}
 /* style.css - Con Modo Oscuro y Formulario */
 
 :root {
@@ -37,18 +45,15 @@ body {
 
 /* --- HEADER --- */
 header {
-    background-color: var(--card-bg); /* Se adapta al tema */
-    backdrop-filter: saturate(180%) blur(20px);
-    /* Hacemos el header un poco transparente */
-    background-color: rgba(255, 255, 255, 0.8); 
+    background-color: rgba(255, 255, 255, 0.85); /* Fondo blanco semitransparente */
+    backdrop-filter: saturate(180%) blur(20px); /* Efecto vidrio de Apple */
     position: sticky;
     top: 0;
     z-index: 1000;
-    border-bottom: 1px solid var(--border-color);
-    height: 60px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    height: 70px; /* Un poco más de altura para que respire */
     display: flex;
     align-items: center;
-    transition: background-color 0.3s ease;
 }
 
 body.dark-mode header {
@@ -56,8 +61,34 @@ body.dark-mode header {
 }
 
 .nav-container {
-    width: 100%; max-width: 980px; margin: 0 auto; padding: 0 20px;
-    display: flex; justify-content: space-between; align-items: center;
+    width: 100%;
+    max-width: 1000px; /* Mismo ancho que el .container principal */
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between; /* Logo a la izq, Menú a la der */
+    align-items: center;
+}
+
+/* Arreglar la lista de enlaces del menú */
+.nav-links {
+    display: flex;
+    gap: 30px; /* Espacio entre links */
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+}
+
+.nav-links a:hover {
+    color: var(--accent-color);
 }
 
 .logo { font-weight: 600; font-size: 1.1rem; text-decoration: none; color: var(--text-primary); }
@@ -95,11 +126,29 @@ h2.section-title { font-size: 2rem; font-weight: 600; margin-bottom: 30px; margi
 .progress-bar-fill { background: var(--accent-color); height: 100%; border-radius: 10px; }
 
 /* Proyectos */
-.projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; width: 100%; }
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 40px;
+    margin-top: 40px;
+    align-items: start; /* Esto evita que una tarjeta estire a las de al lado */
+}
 .card { display: flex; flex-direction: column; height: 100%; justify-content: space-between; }
 .card:hover { transform: translateY(-5px); }
 .card h3 { font-size: 1.6rem; margin-bottom: 15px; font-weight: 700; color: var(--text-primary); }
-.card p { color: var(--text-secondary); font-size: 1.05rem; line-height: 1.6; margin-bottom: 25px; }
+.card p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    
+    /* TRUCO PARA QUE NO SE ESTIREN: */
+    display: -webkit-box;
+    -webkit-line-clamp: 4; /* Muestra máximo 4 líneas de texto */
+    -webkit-box-orient: vertical;
+    overflow: hidden; /* Esconde el resto del texto */
+    text-overflow: ellipsis; /* Agrega los puntos (...) al final */
+}
 
 .btn {
     align-self: flex-start; background: var(--accent-color); color: white;
